@@ -260,6 +260,7 @@
                             <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
                             <quiet>true</quiet>
                             <additionalparam>-Xdoclint:none</additionalparam>
+                            <doclint>none</doclint>
                         </configuration>
                     </plugin>
                     <plugin>
