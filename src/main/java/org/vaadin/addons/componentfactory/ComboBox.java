@@ -33,8 +33,6 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.data.binder.HasFilterableDataProvider;
 import com.vaadin.flow.data.provider.ArrayUpdater;
@@ -87,7 +85,7 @@ import elemental.json.JsonValue;
  * @author Vaadin Ltd
  */
 @JsModule("./flow-component-renderer.js")
-@JsModule("./comboBoxConnector-es6.js")
+@JsModule("./src/comboBoxConnector.js")
 public class ComboBox<T> extends ComboBoxBase<ComboBox<T>, T>
         implements HasSize, HasValidation, HasFilterableDataProvider<T, String>,
         HasHelper, HasLabel {

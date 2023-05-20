@@ -1,11 +1,12 @@
-# Accessible ComboBox project
+# Accessible ComboBox and MultiSelectComboBox project
 
-Accessible version of ComboBox for Vaadin 14 based web component of Vaadin 23, which has been rewritten for better accessibility. The Java API us the same as regular Vaadin 14 ComboBox. The web component name has been renamed to vcf-combo-box to avoid duplicate component registration.
+Accessible versions of ComboBox and MultiSelectComboBox for Vaadin 14 based web components of Vaadin 23, which has been rewritten for better accessibility. The Java API us the same as regular Vaadin 14 ComboBox. The web component name has been renamed to vcf-combo-box and vcf-multi-select-combo-box (and child elements respectively with same convention) to avoid duplicate component registration.
 
 ## Development instructions
 
 ### Important Files 
 * ComboBox.java: this is the addon-on component class.
+* MultiSelectComboBox.java: this the multiselect version
 * View.java: A View class that let's you test the component you are building. 
 * src/main/resources/META-INF/resources/frontend/src contains actual web component, mostly copied from Vaadin 23. 
 

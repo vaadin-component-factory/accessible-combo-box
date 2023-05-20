@@ -15,6 +15,7 @@
  */
 package org.vaadin.addons.componentfactory;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.internal.StateNode;
 
 /**
@@ -28,7 +29,7 @@ final class FieldValidationUtil {
         // utility class should not be instantiated
     }
 
-    static void disableClientValidation(ComboBox<?> component) {
+    static void disableClientValidation(Component component) {
         // Since this method should be called for every time when the component
         // is attached to the UI, lets check that it is actually so
         if (!component.isAttached()) {
@@ -50,13 +51,19 @@ final class FieldValidationUtil {
                                 component)));
     }
 
-    private static void overrideClientValidation(ComboBox<?> component) {
+    private static void overrideClientValidation(Component component) {
         // Overwrite client validation method to simply return validation state
         // set from server
         StringBuilder expression = new StringBuilder(
                 "this.validate = function () {return !this.invalid;};");
 
-        if (component.isInvalid()) {
+        boolean isInvalid = false;
+        if (component instanceof ComboBox) {
+            isInvalid = ((ComboBox) component).isInvalid();
+        } else if (component instanceof AbstractComboBox) {
+            isInvalid = ((AbstractComboBox) component).isInvalid();            
+        }
+        if (isInvalid) {
             /*
              * By default the invalid flag is set to false. Workaround the case
              * where the client side validation overrides the invalid state

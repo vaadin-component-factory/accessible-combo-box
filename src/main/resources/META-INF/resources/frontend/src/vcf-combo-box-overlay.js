@@ -7,24 +7,6 @@ import { OverlayElement } from '@vaadin/vaadin-overlay/src/vaadin-overlay.js';
 import { PositionMixin } from './vcf-overlay-position-mixin.js';
 import { html } from '@polymer/polymer/polymer-element.js';
 
-//if (window.Vaadin && window.Vaadin.styleModules) {
-//window.Vaadin.styleModules.registerStyles(
-//  'vcf-combo-box-overlay',
-//  css`
-//    #overlay {
-//      width: var(--vaadin-combo-box-overlay-width, var(--_vcf-combo-box-overlay-default-width, auto));
-//    }
-//
-//    [part='content'] {
-//      display: flex;
-//      flex-direction: column;
-//      height: 100%;
-//    }
-//  `,
-//  { moduleId: 'vcf-combo-box-overlay-styles' },
-//);
-//}
-
 let memoizedTemplate;
 
 /**

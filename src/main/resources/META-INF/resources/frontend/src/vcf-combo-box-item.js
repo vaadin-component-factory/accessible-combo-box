@@ -176,7 +176,12 @@ export class ComboBoxItem extends ThemableMixin(DirMixin(PolymerElement)) {
       },
 
       /**
-       * Custom function for rendering the content of the `<vaadin-combo-box-item>` propagated from the combo box element.
+       * The template instance corresponding to the item
+       */
+      _itemTemplateInstance: Object,
+
+      /**
+       * Custom function for rendering the content of the `<vcf-combo-box-item>` propagated from the combo box element.
        */
       renderer: Function,
 
@@ -188,13 +193,29 @@ export class ComboBoxItem extends ThemableMixin(DirMixin(PolymerElement)) {
   }
 
   static get observers() {
-    return ['__rendererOrItemChanged(renderer, index, item.*, selected, focused)', '__updateLabel(label, renderer)'];
+    return [
+		'__rendererOrItemChanged(renderer, index, item.*, selected, focused)',
+		'__updateLabel(label, _itemTemplateInstance)',
+		'_updateTemplateInstanceVariable("index", index, _itemTemplateInstance)',
+        '_updateTemplateInstanceVariable("item", item, _itemTemplateInstance)',
+        '_updateTemplateInstanceVariable("selected", selected, _itemTemplateInstance)',
+        '_updateTemplateInstanceVariable("focused", focused, _itemTemplateInstance)'
+      ];
   }
 
   connectedCallback() {
     super.connectedCallback();
 
     this._comboBox = this.parentNode.comboBox;
+
+        if (!this._itemTemplateInstance) {
+          this._comboBox._ensureTemplatized();
+          if (this._comboBox._TemplateClass) {
+            this._itemTemplateInstance = new this._comboBox._TemplateClass({});
+            this.textContent = '';
+            this.appendChild(this._itemTemplateInstance.root);
+          }
+        }
 
     const hostDir = this._comboBox.getAttribute('dir');
     if (hostDir) {
@@ -219,7 +240,6 @@ export class ComboBoxItem extends ThemableMixin(DirMixin(PolymerElement)) {
       focused: this.focused,
       selected: this.selected,
     };
-
     this.renderer(this, this._comboBox, model);
   }
 
@@ -242,15 +262,20 @@ export class ComboBoxItem extends ThemableMixin(DirMixin(PolymerElement)) {
       this.requestContentUpdate();
     }
   }
-
+      
   /** @private */
-  __updateLabel(label, renderer) {
-    if (renderer) {
-      return;
+  __updateLabel(label, _itemTemplateInstance) {
+    if (_itemTemplateInstance === undefined && !this.renderer) {
+      this.textContent = label;
     }
-
-    this.textContent = label;
   }
+
+      _updateTemplateInstanceVariable(variable, value, _itemTemplateInstance) {
+        if (variable === undefined || value === undefined || _itemTemplateInstance === undefined) {
+          return;
+        }
+        _itemTemplateInstance[variable] = value;
+      }
 }
 
 customElements.define(ComboBoxItem.is, ComboBoxItem);

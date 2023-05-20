@@ -18,12 +18,12 @@ import { ComboBoxDataProviderMixin } from './vcf-combo-box-data-provider-mixin.j
 import { ComboBoxMixin } from './vcf-combo-box-mixin.js';
 
 /**
- * `<vaadin-combo-box>` is a web component for choosing a value from a filterable list of options
+ * `<vcf-combo-box>` is a web component for choosing a value from a filterable list of options
  * presented in a dropdown overlay. The options can be provided as a list of strings or objects
  * by setting [`items`](#/elements/vaadin-combo-box#property-items) property on the element.
  *
  * ```html
- * <vaadin-combo-box id="combo-box"></vaadin-combo-box>
+ * <vcf-combo-box id="combo-box"></vcf-combo-box>
  * ```
  *
  * ```js
@@ -34,7 +34,7 @@ import { ComboBoxMixin } from './vcf-combo-box-mixin.js';
  *
  * ### Item rendering
  *
- * To customize the content of the `<vaadin-combo-box-item>` elements placed in the dropdown, use
+ * To customize the content of the `<vcf-combo-box-item>` elements placed in the dropdown, use
  * [`renderer`](#/elements/vaadin-combo-box#property-renderer) property which accepts a function.
  * The renderer function is called with `root`, `comboBox`, and `model` as arguments.
  *
@@ -69,7 +69,7 @@ import { ComboBoxMixin } from './vcf-combo-box-mixin.js';
  *
  * In addition to assigning an array to the items property, you can alternatively use the
  * [`dataProvider`](#/elements/vaadin-combo-box#property-dataProvider) function property.
- * The `<vaadin-combo-box>` calls this function lazily, only when it needs more data
+ * The `<vcf-combo-box>` calls this function lazily, only when it needs more data
  * to be displayed.
  *
  * __Note that when using function data providers, the total number of items
@@ -100,7 +100,7 @@ import { ComboBoxMixin } from './vcf-combo-box-mixin.js';
  * `--vaadin-combo-box-overlay-width`      | Width of the overlay       | `auto`
  * `--vaadin-combo-box-overlay-max-height` | Max height of the overlay  | `65vh`
  *
- * `<vaadin-combo-box>` provides the same set of shadow DOM parts and state attributes as `<vaadin-text-field>`.
+ * `<vcf-combo-box>` provides the same set of shadow DOM parts and state attributes as `<vaadin-text-field>`.
  * See [`<vaadin-text-field>`](#/elements/vaadin-text-field) for the styling documentation.
  *
  * In addition to `<vaadin-text-field>` parts, the following parts are available for theming:
@@ -214,7 +214,7 @@ class ComboBox extends ComboBoxDataProviderMixin(
   :host([has-label]) {
     padding-top: var(--lumo-space-m);
   }
-    vaadin-input-container {
+    [part='input-field'] {
       min-height: var(--lumo-text-field-size, var(--lumo-size-m));	
       border-radius: var(--lumo-border-radius-m);
       background-color: var(--lumo-contrast-10pct);
@@ -226,7 +226,7 @@ class ComboBox extends ComboBoxDataProviderMixin(
       box-sizing: border-box;
     }
     /* Used for hover and activation effects */
-    vaadin-input-container::after {
+    [part='input-field']::after {
       content: '';
       position: absolute;
       top: 0;
@@ -240,7 +240,7 @@ class ComboBox extends ComboBoxDataProviderMixin(
       transition: transform 0.15s, opacity 0.2s;
       transform-origin: 100% 0;
     }
-    vaadin-input-container::slotted(:not([slot$='fix'])) {
+    [part='input-field']::slotted(:not([slot$='fix'])) {
       cursor: inherit;
       min-height: var(--lumo-text-field-size, var(--lumo-size-m));
       padding: 0 0.25em;
@@ -249,7 +249,7 @@ class ComboBox extends ComboBoxDataProviderMixin(
       mask-image: var(--_lumo-text-field-overflow-mask-image);
     }
     /* Read-only */
-    vaadin-input-container[readonly] {
+    [part='input-field'][readonly] {
       color: var(--lumo-secondary-text-color);
       background-color: transparent;
       cursor: default;
@@ -263,18 +263,18 @@ class ComboBox extends ComboBoxDataProviderMixin(
     color: var(--lumo-disabled-text-color);
     -webkit-text-fill-color: var(--lumo-disabled-text-color);
   }
-    vaadin-input-container[disabled] {
+    [part='input-field'][disabled] {
       background-color: var(--lumo-contrast-5pct);
     }
-    vaadin-input-container[disabled] ::slotted(*) {
+    [part='input-field'][disabled] ::slotted(*) {
       color: var(--lumo-disabled-text-color);
       -webkit-text-fill-color: var(--lumo-disabled-text-color);
     }
     /* Invalid */
-    vaadin-input-container[invalid] {
+    [part='input-field'][invalid] {
       background-color: var(--lumo-error-color-10pct);
     }
-    vaadin-input-container[invalid]::after {
+    [part='input-field'][invalid]::after {
       background-color: var(--lumo-error-color-50pct);
     }
     :host([focus-ring]) [part='input-field'] {
@@ -351,13 +351,13 @@ class ComboBox extends ComboBoxDataProviderMixin(
     vaadin-input-container[dir='rtl']::after {
       transform-origin: 0% 0;
     }
-    vaadin-input-container[theme~='align-left'][dir='rtl'] ::slotted(:not([slot$='fix'])) {
+    [part='input-field'][theme~='align-left'][dir='rtl'] ::slotted(:not([slot$='fix'])) {
       --_lumo-text-field-overflow-mask-image: none;
     }
-    vaadin-input-container[theme~='align-center'][dir='rtl'] ::slotted(:not([slot$='fix'])) {
+    [part='input-field'][theme~='align-center'][dir='rtl'] ::slotted(:not([slot$='fix'])) {
       --_lumo-text-field-overflow-mask-image: none;
     }
-    vaadin-input-container[theme~='align-right'][dir='rtl'] ::slotted(:not([slot$='fix'])) {
+    [part='input-field'][theme~='align-right'][dir='rtl'] ::slotted(:not([slot$='fix'])) {
       --_lumo-text-field-overflow-mask-image: none;
     }
     @-moz-document url-prefix() {

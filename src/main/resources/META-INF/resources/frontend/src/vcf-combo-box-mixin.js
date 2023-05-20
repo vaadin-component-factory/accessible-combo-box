@@ -8,10 +8,12 @@ import { ControllerMixin } from '@vaadin/component-base/src/controller-mixin.js'
 import { DisabledMixin } from '@vaadin/component-base/src/disabled-mixin.js';
 import { isElementFocused } from '@vaadin/component-base/src/focus-utils.js';
 import { KeyboardMixin } from '@vaadin/component-base/src/keyboard-mixin.js';
-import { processTemplates } from '@vaadin/component-base/src/templates.js';
+//import { processTemplates } from '@vaadin/component-base/src/templates.js';
 import { InputMixin } from '@vaadin/field-base/src/input-mixin.js';
 import { VirtualKeyboardController } from '@vaadin/field-base/src/virtual-keyboard-controller.js';
 import { ComboBoxPlaceholder } from './vcf-combo-box-placeholder.js';
+import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
+import * as Templatize from '@polymer/polymer/lib/utils/templatize.js';
 
 /**
  * Checks if the value is supported as an item value in this control.
@@ -83,8 +85,8 @@ export const ComboBoxMixin = (subclass) =>
          * Custom function for rendering the content of every item.
          * Receives three arguments:
          *
-         * - `root` The `<vaadin-combo-box-item>` internal container DOM element.
-         * - `comboBox` The reference to the `<vaadin-combo-box>` element.
+         * - `root` The `<vcf-combo-box-item>` internal container DOM element.
+         * - `comboBox` The reference to the `<vcf-combo-box>` element.
          * - `model` The object with the properties related with the rendered
          *   item, contains:
          *   - `model.index` The index of the rendered item.
@@ -236,12 +238,16 @@ export const ComboBoxMixin = (subclass) =>
           type: Boolean,
           observer: '_overlayOpenedChanged',
         },
+        
+        /** @private */
+        _itemTemplate: Object
       };
     }
 
     static get observers() {
       return [
         '_selectedItemChanged(selectedItem, itemValuePath, itemLabelPath)',
+        '_templateOrRendererChanged(_itemTemplate, renderer)',        
         '_openedOrItemsChanged(opened, filteredItems, loading)',
         '_updateScroller(_scroller, filteredItems, opened, loading, selectedItem, itemIdPath, _focusedIndex, renderer, theme)',
       ];
@@ -341,6 +347,10 @@ export const ComboBoxMixin = (subclass) =>
       this.addEventListener('click', this._boundOnClick);
       this.addEventListener('touchend', this._boundOnTouchend);
 
+      this._observer = new FlattenedNodesObserver(this, info => {
+        this._setTemplateFromNodes(info.addedNodes);
+      });
+
       const bringToFrontListener = () => {
         requestAnimationFrame(() => {
           this.$.overlay.bringToFront();
@@ -350,7 +360,7 @@ export const ComboBoxMixin = (subclass) =>
       this.addEventListener('mousedown', bringToFrontListener);
       this.addEventListener('touchstart', bringToFrontListener);
 
-      processTemplates(this);
+//      processTemplates(this);
 
       this.addController(new VirtualKeyboardController(this));
     }
@@ -379,6 +389,31 @@ export const ComboBoxMixin = (subclass) =>
       this._getItemElements().forEach((item) => {
         item.requestContentUpdate();
       });
+    }
+
+    /** @private */
+    _setTemplateFromNodes(nodes) {
+      this._itemTemplate = nodes.filter(node => node.localName && node.localName === 'template')[0] || this._itemTemplate;
+    }
+
+    /** @private */
+    _removeNewRendererOrTemplate(template, oldTemplate, renderer, oldRenderer) {
+      if (template !== oldTemplate) {
+        this._itemTemplate = undefined;
+      } else if (renderer !== oldRenderer) {
+        this.renderer = undefined;
+      }
+    }
+
+    /** @private */
+    _templateOrRendererChanged(template, renderer) {
+      if (template && renderer) {
+        this._removeNewRendererOrTemplate(template, this._oldTemplate, renderer, this._oldRenderer);
+        throw new Error('You should only use either a renderer or a template for combo box items');
+      }
+
+      this._oldTemplate = template;
+      this._oldRenderer = renderer;
     }
 
     /**
@@ -1303,6 +1338,42 @@ export const ComboBoxMixin = (subclass) =>
 
       event.preventDefault();
       this._clear();
+    }
+
+    /** @private */
+    get _instanceProps() {
+      return {
+        item: true,
+        index: true,
+        selected: true,
+        focused: true
+      };
+    }
+
+    /** @protected */
+    _ensureTemplatized() {
+      if (!this._TemplateClass) {
+        const tpl = this._itemTemplate || this._getRootTemplate();
+        if (tpl) {
+          this._TemplateClass = Templatize.templatize(tpl, this, {
+            instanceProps: this._instanceProps,
+            forwardHostProp: function(prop, value) {
+              const items = this.$.overlay.querySelectorAll('vcf-combo-box-item');
+              Array.prototype.forEach.call(items, item => {
+                if (item._itemTemplateInstance) {
+                  item._itemTemplateInstance.set(prop, value);
+                  item._itemTemplateInstance.notifyPath(prop, value, true);
+                }
+              });
+            }
+          });
+        }
+      }
+    }
+
+    /** @private */
+    _getRootTemplate() {
+      return Array.prototype.filter.call(this.children, elem => elem.tagName === 'TEMPLATE')[0];
     }
 
     /**

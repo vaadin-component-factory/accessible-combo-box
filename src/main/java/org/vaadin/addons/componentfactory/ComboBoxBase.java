@@ -987,7 +987,7 @@ public abstract class ComboBoxBase<R extends ComboBoxBase<R, T>, T>
      * @return the {@code pattern} property from the webcomponent
      */
     protected String getPatternString() {
-        return getElement().getProperty("pattern");
+        return getElement().getProperty("allowedCharPattern");
     }
 
     /**
@@ -1002,7 +1002,7 @@ public abstract class ComboBoxBase<R extends ComboBoxBase<R, T>, T>
      *            the String value to set
      */
     protected void setPattern(String pattern) {
-        getElement().setProperty("pattern", pattern == null ? "" : pattern);
+        getElement().setProperty("allowedCharPattern", pattern == null ? "" : pattern);
     }
 
     /**

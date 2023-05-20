@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>accessible-combo-box</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.1</version>
     <name>Accessible ComboBox</name>
     <description>Accessible ComboBox</description>
 
@@ -140,7 +140,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.28.v20200408</version>
                 <configuration>
-                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                    <scanIntervalSeconds>3</scanIntervalSeconds>
                     <!-- Use test scope because the UI/test classes are in
                         the test package. -->
                     <useTestScope>true</useTestScope>
