@@ -297,9 +297,8 @@ import elemental.json.JsonObject;
 @NpmPackage(value = "@vaadin/vaadin-element-mixin", version = "^2.1.3")
 @NpmPackage(value = "@vaadin/vaadin-themable-mixin", version = "^1.4.4")
 @JsModule("./src/vcf-combo-box.js")
-public abstract class ComboBoxBase<R extends ComboBoxBase<R, T>, T>
-        extends AbstractSinglePropertyField<R, T>
-        implements HasStyle, Focusable<R> {
+public abstract class ComboBoxBase<R extends ComboBoxBase<R, T>, T> extends
+        AbstractSinglePropertyField<R, T> implements HasStyle, Focusable<R> {
 
     /**
      * This property is not synchronized automatically from the client side, so
@@ -952,8 +951,11 @@ public abstract class ComboBoxBase<R extends ComboBoxBase<R, T>, T>
      * the returned value may not be the same as in client side.
      * </p>
      *
+     * @deprecated use getAllowedCharPattern instead
+     * 
      * @return the {@code preventInvalidInput} property from the webcomponent
      */
+    @Deprecated
     protected boolean isPreventInvalidInputBoolean() {
         return getElement().getProperty("preventInvalidInput", false);
     }
@@ -966,11 +968,41 @@ public abstract class ComboBoxBase<R extends ComboBoxBase<R, T>, T>
      * Set to true to prevent the user from entering invalid input.
      * </p>
      *
+     * @deprecated use setAllowedCharPattern instead
+     * 
      * @param preventInvalidInput
      *            the boolean value to set
      */
+    @Deprecated
     protected void setPreventInvalidInput(boolean preventInvalidInput) {
         getElement().setProperty("preventInvalidInput", preventInvalidInput);
+    }
+
+    /**
+     * A regular expression that the user input is checked against. The allowed
+     * pattern must matches a single character, not the sequence of characters.
+     *
+     * @return the {@code allowedCharPattern} property
+     */
+    public String getAllowedCharPattern() {
+        return getElement().getProperty("allowedCharPattern", "");
+    }
+
+    /**
+     * Sets a regular expression for the user input to pass on the client-side.
+     * The allowed char pattern must be a valid JavaScript Regular Expression
+     * that matches a single character, not the sequence of characters.
+     * <p>
+     * For example, to allow entering only numbers and slash character, use
+     * {@code setAllowedCharPattern("[0-9/]")}`.
+     * </p>
+     *
+     * @param pattern
+     *            the String pattern to set
+     */
+    public void setAllowedCharPattern(String pattern) {
+        getElement().setProperty("allowedCharPattern",
+                pattern == null ? "" : pattern);
     }
 
     /**
@@ -1002,7 +1034,8 @@ public abstract class ComboBoxBase<R extends ComboBoxBase<R, T>, T>
      *            the String value to set
      */
     protected void setPattern(String pattern) {
-        getElement().setProperty("allowedCharPattern", pattern == null ? "" : pattern);
+        getElement().setProperty("allowedCharPattern",
+                pattern == null ? "" : pattern);
     }
 
     /**
