@@ -29,6 +29,7 @@ public class MultiSelectComboBoxView extends VerticalLayout {
             Notification.show("Value: "
                     + e.getValue().stream().collect(Collectors.joining(",")));
         });
+        combo.addThemeName("mytheme");
 
         Checkbox error = new Checkbox("error");
         error.addValueChangeListener(e -> {

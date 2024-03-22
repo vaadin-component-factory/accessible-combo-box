@@ -30,6 +30,7 @@ import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.HasHelper;
 import com.vaadin.flow.component.HasLabel;
 import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
@@ -88,7 +89,7 @@ import elemental.json.JsonValue;
 @JsModule("./src/comboBoxConnector.js")
 public class ComboBox<T> extends ComboBoxBase<ComboBox<T>, T>
         implements HasSize, HasValidation, HasFilterableDataProvider<T, String>,
-        HasHelper, HasLabel {
+        HasHelper, HasLabel, HasTheme {
 
     private static final String PROP_SELECTED_ITEM = "selectedItem";
     private static final String PROP_VALUE = "value";

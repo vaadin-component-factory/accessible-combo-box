@@ -546,7 +546,7 @@ class MultiSelectComboBox extends ResizeMixin(InputControlMixin(ThemableMixin(El
           selected-items="[[selectedItems]]"
           opened="{{opened}}"
           renderer="[[renderer]]"
-          theme$="[[_theme]]"
+          theme$="[[theme]]"
           on-combo-box-item-selected="_onComboBoxItemSelected"
           on-change="_onComboBoxChange"
           on-custom-value-set="_onCustomValueSet"
@@ -557,7 +557,7 @@ class MultiSelectComboBox extends ResizeMixin(InputControlMixin(ThemableMixin(El
             readonly="[[readonly]]"
             disabled="[[disabled]]"
             invalid="[[invalid]]"
-            theme$="[[_theme]]"
+            theme$="[[theme]]"
           >
             <vcf-multi-select-combo-box-chip
               id="overflow"

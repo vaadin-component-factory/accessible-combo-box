@@ -535,7 +535,7 @@ class ComboBox extends ComboBoxDataProviderMixin(
           readonly="[[readonly]]"
           disabled="[[disabled]]"
           invalid="[[invalid]]"
-          theme$="[[_theme]]"
+          theme$="[[theme]]"
         >
           <slot name="prefix" slot="prefix"></slot>
           <slot name="input"></slot>
@@ -556,7 +556,7 @@ class ComboBox extends ComboBoxDataProviderMixin(
         id="overlay"
         opened="[[_overlayOpened]]"
         loading$="[[loading]]"
-        theme$="[[_theme]]"
+        theme$="[[theme]]"
         position-target="[[_positionTarget]]"
         no-vertical-overlap
         restore-focus-node="[[inputElement]]"

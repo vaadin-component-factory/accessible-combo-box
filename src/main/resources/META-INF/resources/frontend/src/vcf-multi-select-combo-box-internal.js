@@ -40,7 +40,7 @@ class MultiSelectComboBoxInternal extends ComboBoxDataProviderMixin(ComboBoxMixi
         id="overlay"
         opened="[[_overlayOpened]]"
         loading$="[[loading]]"
-        theme$="[[_theme]]"
+        theme$="[[theme]]"
         position-target="[[_target]]"
         no-vertical-overlap
         restore-focus-node="[[inputElement]]"

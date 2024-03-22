@@ -26,6 +26,7 @@ public class ComboBoxView extends VerticalLayout {
         combo.addValueChangeListener(e -> {
             Notification.show("Value: " + e.getValue());
         });
+        combo.addThemeName("mytheme");
 
         Checkbox error = new Checkbox("error");
         error.addValueChangeListener(e -> {
